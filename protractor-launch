@@ -1,0 +1,75 @@
+#!/bin/bash
+
+export PROTRACTOR_PATH=${PWD}/niara_test_suites/javascript_files/niara/qa/analyzer/ui
+
+echo -e "\nNode Version: " ;
+node --version;
+
+echo -e "\nProtractor Version: " ;
+protractor --version;
+
+SUITES=$1
+if [ "$SUITES" != '' ]; then
+	echo -e "\nSuites:"
+	echo -e "'$SUITES'"
+fi
+
+BROWSERS=$2
+if [ "$BROWSERS" == 'all' ]; then
+	BROWSERS="chr,ff,ie"
+	echo -e "\nBrowsers:"
+	echo -e "'$BROWSERS'"
+elif [ "$BROWSERS" != '' ]; then
+	echo -e "\nBrowsers:"
+	echo -e "'$BROWSERS'"
+fi
+
+STACKNAME=$3
+if [ "$STACKNAME" != '' ]; then
+	cp $PROTRACTOR_PATH/globals.js $PROTRACTOR_PATH/$STACKNAME-globals.js
+fi
+
+STACKNAME_URL=$4
+if [[ "$STACKNAME_URL" == '' || "$STACKNAME_URL" == 'debug' ]]; then
+	STACKNAME_URL="https://$STACKNAME"
+fi
+
+if [[ "$4" == 'debug' || "$5" == 'debug' ]]; then
+	SELENIUM='localhost'
+	SELENIUM_PATH='http://localhost:4444/wd/hub'
+else
+	SELENIUM='SPECIFIC_SEL'
+	SELENIUM_PATH='http://SPECIFIC_SEL:4444/wd/hub'
+fi
+
+echo -e "\nSelenium Path:"
+echo -e "'http://$SELENIUM:4444/wd/hub'"
+
+echo -e "\nCluster Name:"
+echo -e "'$STACKNAME'"
+
+echo -e "\nCluster URL:"
+echo -e "'$STACKNAME_URL'"
+
+if [ "$BROWSERS" != '' ] && [ "$SUITES" != '' ]; then
+
+	browsers=$(echo $BROWSERS | tr "," "\n")
+
+	for br in $browsers
+	do
+		CONF_PATH="$PROTRACTOR_PATH/$STACKNAME-$br-conf.js"
+		python $PROTRACTOR_PATH/protractor-dynamic-conf.py $br $STACKNAME $STACKNAME_URL $CONF_PATH $SELENIUM_PATH
+		protractor $CONF_PATH --suite $SUITES
+
+		rm -f $CONF_PATH
+		cat ${PWD}/protractor-xmloutput.xml > ${PWD}/$STACKNAME-$br-xmloutput.xml
+		rm -f ${PWD}/protractor-xmloutput.xml
+		echo -e "\nResults written to \"${PWD}/$STACKNAME-$br-xmloutput.xml\""
+		sleep 5
+	done
+	rm -f $PROTRACTOR_PATH/$STACKNAME-globals.js
+else
+	echo -e "\nMissing Suite and/or Browser! Type \"bash protractor-launch <suite> <browser,browser>\"!\n"
+	echo -e "Suites include: \"data\", \"empty\", \"login\", \"account\", \"roles\", \"pages\", \"action\", \"modes\", \"delete\", etc.\n"
+	echo -e "Browsers include: \"chr\", \"ff\", \"ie\", etc.\n"
+fi
