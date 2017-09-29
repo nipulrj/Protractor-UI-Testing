@@ -113,7 +113,7 @@ The **stack** stackname parameter gives the basic url that the tests require to 
 
 The https://**url**.com url parameter is only needed if the cluster url does not match the format https://**stack**.com/#/login.
 
-The last parameter **debug** is not needed when using Jenkins but allows the user to view the run on the local browser as long as the webdriver manager is up and running on the local host. The default driver is set to **qa-selenium.niara.com**.
+The last parameter **debug** is not needed when using Jenkins but allows the user to view the run on the local browser as long as the webdriver manager is up and running on the local host. The default driver is set in **protractor-launch**.
 
 ### Suite Parameters - (Case-Sensitive)
 
