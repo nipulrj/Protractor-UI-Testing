@@ -82,7 +82,7 @@ As shown above, running Protractor is simple with just a conf file and spec file
 With the **protractor-launch** script in the scripts folder, tests can be dynamically ran.
 
 ```
-bash scripts/protractor-launch data chr,ff,ie stack https://stack.com debug
+bash scripts/protractor-launch data chr,ff,ie stack https://url.com debug
 
 bash scripts/protractor-launch {suite} {browsers} {stackname} {stackname_url} debug
 ```
@@ -111,7 +111,7 @@ Once this run is complete, the next run for the next browser is started, in this
 
 The **stack** stackname parameter gives the basic url that the tests require to open the correct page; unless **stackname_url** is specified. 
 
-The **https://stack.com** url parameter is only needed if the cluster url does not match the format https://**stack**.com/#/login.
+The https://**url**.com url parameter is only needed if the cluster url does not match the format https://**stack**.com/#/login.
 
 The last parameter **debug** is not needed when using Jenkins but allows the user to view the run on the local browser as long as the webdriver manager is up and running on the local host. The default driver is set to **qa-selenium.niara.com**.
 
