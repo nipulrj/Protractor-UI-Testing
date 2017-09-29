@@ -43,7 +43,7 @@ with a simple conf.js file like the following:
 ```
 exports.config = {
   framework: 'jasmine',
-  seleniumAddress: 'http://qa-selenium.niara.com:4444/wd/hub',
+  seleniumAddress: 'http://SELENIUM_SERVER:4444/wd/hub',
   specs: ['spec.js'],
 
   multiCapabilities: [{
@@ -82,7 +82,7 @@ As shown above, running Protractor is simple with just a conf file and spec file
 With the **protractor-launch** script in the scripts folder, tests can be dynamically ran.
 
 ```
-bash scripts/protractor-launch data chr,ff,ie uitest01 https://uitest01.portal.niarasystems.com debug
+bash scripts/protractor-launch data chr,ff,ie stack https://stack.com debug
 
 bash scripts/protractor-launch {suite} {browsers} {stackname} {stackname_url} debug
 ```
@@ -109,9 +109,9 @@ protractor conf_chrome.js
 ```
 Once this run is complete, the next run for the next browser is started, in this case **ff** or Firefox.
 
-The **uitest01** stackname parameter gives the basic url that the tests require to open the correct page; unless **stackname_url** is specified. 
+The **stack** stackname parameter gives the basic url that the tests require to open the correct page; unless **stackname_url** is specified. 
 
-The **https://uitest01.portal.niarasystems.com** url parameter is only needed if the aws cluster url does not match the format https://**stackname.portal**.niarasystems.com/#/login.
+The **https://stack.com** url parameter is only needed if the cluster url does not match the format https://**stack**.com/#/login.
 
 The last parameter **debug** is not needed when using Jenkins but allows the user to view the run on the local browser as long as the webdriver manager is up and running on the local host. The default driver is set to **qa-selenium.niara.com**.
 
@@ -173,10 +173,6 @@ elif re.search('CHR', self.browser, re.I):
       self.file.write("   'version': '54',\n")
       self.file.write("   'new_cap': ['value']\n")
 ```
-
-***Change Current Tests***
-
-Refer to the [Confluence](https://niara-mgmt.atlassian.net/wiki/spaces/TA/pages/121607378/UI+Testing+Status) Page to get information on the current tests and make changes accordingly.
 
 ## Built Using
 
